@@ -1,3 +1,4 @@
+import { generateJWTToken } from "../config/generateJwtToken.js";
 import User from "../models/user.model.js";
 
 export const registerUser = async (req, res) => {
@@ -30,7 +31,8 @@ export const registerUser = async (req, res) => {
 
         res.status(201).json({
             message: "User created successfully !!!",
-            data: newUser
+            data: newUser,
+            token: generateJWTToken(newUser._id)
         })
     } catch (error) {
         res.status(500).json({
