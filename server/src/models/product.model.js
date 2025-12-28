@@ -36,7 +36,14 @@ const ProductSchema = new mongoose.Schema({
     images: {
         type: [String],
         required: true,
-    }
+    },
+    slug: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true,
+    },
 }, { timestamps: true })
 
 

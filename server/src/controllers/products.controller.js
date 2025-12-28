@@ -1,8 +1,24 @@
 import Product from "../models/product.model.js";
+import { generateSlug } from "../utils/slugify.js";
 
 export const createProduct = async (req, res) => {
     try {
-        const newProduct = await Product.create(req.body);
+        // Slugify the product title to create a slug for better SEO
+
+        const { title } = req.body;
+
+        if (!title) {
+            return res.status(400).json(
+                {
+                    message: "Product Title is required"
+                }
+            )
+        }
+
+        const slugify = generateSlug(title);
+
+        const productDataFromReq = { ...req.body, slug: slugify };
+        const newProduct = await Product.create(productDataFromReq);
         return res.status(201).json({
             message: "Product created successfully",
             data: newProduct
