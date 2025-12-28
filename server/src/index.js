@@ -4,6 +4,7 @@ import express, { urlencoded } from "express";
 import cors from "cors"
 import morgan from "morgan";
 import { dbConnect } from "./config/dbConnect.js";
+import userRouter from "./routes/user.route.js";
 
 
 const app = express();
@@ -27,12 +28,18 @@ app.use(urlencoded({ extended: true }));
 dbConnect()
     .then(() => {
         app.listen(process.env.PORT, () => {
-            console.log(`Server is running on port ${process.env.PORT}`);
+            console.log(`Server is running on port http://localhost:${process.env.PORT}`);
         })
     })
     .catch((error) => {
         console.error("Failed to connect to the database:", error);
     })
+
+
+
+// Import Routes
+
+app.use("/api/auth", userRouter);
 
 
 

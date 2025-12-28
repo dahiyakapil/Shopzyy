@@ -1,0 +1,35 @@
+import mongoose from "mongoose"
+
+
+const UserSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true,
+        trim: true,
+        maxLenghth: 30,
+        minLenght: 3,
+    },
+    lastName: {
+        type: String,
+        trim: true,
+        maxLenghth: 30,
+        minLength: 3
+    },
+    email: {
+        type: String,
+        required: true,
+        unqiue: true,
+        trim: true,
+        lowercase: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    },
+    password: {
+        type: String,
+        required: true,
+        minLength: 8,
+    }
+})
+
+
+const User = mongoose.model("User", UserSchema);
+export default User;
