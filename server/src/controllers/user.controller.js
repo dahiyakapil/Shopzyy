@@ -7,7 +7,7 @@ export const registerUser = async (req, res) => {
 
     try {
         if (!firstName || !email || !password) {
-            return resizeBy.status(400).json({
+            return res.status(400).json({
                 message: "Enter all fields required"
             })
         }
@@ -21,10 +21,7 @@ export const registerUser = async (req, res) => {
             })
         }
 
-
-
-
-        const newUser = new User({ firstName, lastName, email, password});
+        const newUser = new User({ firstName, lastName, email, password });
 
         // now save the user
         await newUser.save();
@@ -39,5 +36,43 @@ export const registerUser = async (req, res) => {
             message: "Server Error",
             error: error.message
         })
+    }
+}
+
+
+
+export const getAllUsers = async (req, res) => {
+
+    try {
+        const allUsers = await User.find();
+        return res.status(200).json({ message: "All users fetched", data: allUsers })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
+
+export const getUsreById = async (req, res) => {
+
+    try {
+        const { id } = req.params;
+
+        // Now find user by id 
+        const user = await User.findById(id).select("-password");
+
+        if (!user) {
+            return res.status(400).json({
+                messaege: "User not found",
+            })
+        }
+        res.status(200).json({
+            message: "User found succesfully",
+            userData: user
+        })
+    } catch (error) {
+        return res.status(500).json({ message: "Server Error", error: error.message })
     }
 }

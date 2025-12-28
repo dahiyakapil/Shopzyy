@@ -39,7 +39,7 @@ dbConnect()
 
 // Import Routes
 
-app.use("/api/auth", userRouter);
+app.use("/api/user", userRouter);
 
 
 
