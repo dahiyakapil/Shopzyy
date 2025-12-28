@@ -1,6 +1,5 @@
 import User from "../models/user.model.js";
 
-
 export const registerUser = async (req, res) => {
 
     const { firstName, lastName, email, password } = req.body;
@@ -21,9 +20,10 @@ export const registerUser = async (req, res) => {
             })
         }
 
-        // Now Create the user
 
-        const newUser = new User({ firstName, lastName, email, password });
+
+
+        const newUser = new User({ firstName, lastName, email, password});
 
         // now save the user
         await newUser.save();

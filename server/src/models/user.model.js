@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-
+import bcrypt from "bcrypt"
 
 const UserSchema = new mongoose.Schema({
     firstName: {
@@ -30,6 +30,14 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
+UserSchema.pre("save", async function (next) {
+  // If our password is not modified than don't update it and simple go next()
+  if (!this.isModified("password")) {
+    next();
+  }
+  const salt = await bcrypt.genSaltSync(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
 const User = mongoose.model("User", UserSchema);
 export default User;
