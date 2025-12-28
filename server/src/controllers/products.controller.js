@@ -75,3 +75,24 @@ export const updateProduct = async (req, res) => {
         )
     }
 }
+
+
+export const deleteProduct = async (req, res) => {
+    try {
+        // get id from params
+        const { id } = req.params;
+
+        const findAndDeleteProduct = await Product.findByIdAndDelete(id);
+        res.status(200).json({
+            message: "Product deleted successfully",
+            data: findAndDeleteProduct
+        })
+    } catch (error) {
+        return res.status(500).json(
+            {
+                message: "Server Error",
+                error: error.message
+            }
+        )
+    }
+}
