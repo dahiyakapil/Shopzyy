@@ -1,5 +1,8 @@
 
 
+import jwt from "jsonwebtoken";
+import User from "../models/user.model.js";
+
 export const authMiddleware = (req, res, next) => {
 
     const authHeader = req?.headers?.authorization;
@@ -21,12 +24,31 @@ export const authMiddleware = (req, res, next) => {
 
 
 export const isAdmin = async (req, res, next) => {
-    const { email } = req.user;
-    const amdinUser = await User.findOne({ email });
+    console.log(req.user)
+    try {
+        if (!req.user) {
+            return res.status(401).json({ message: "Not authenticated" });
+        }
 
-    if (amdinUser.role !== "admin") {
-        return res.status(403).json({ message: "Access Denied," });
-    } else {
+        const { email, id } = req.user;
+
+        let adminUser = null;
+        if (email) {
+            adminUser = await User.findOne({ email });
+        } else if (id) {
+            adminUser = await User.findById(id);
+        }
+
+        if (!adminUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (adminUser.role !== "admin") {
+            return res.status(403).json({ message: "Access Denied" });
+        }
+
         next();
+    } catch (error) {
+        return res.status(500).json({ message: "Server Error", error: error.message });
     }
 }

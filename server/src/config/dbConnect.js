@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 export const dbConnect = async () => {
     try {
         const connectionInstance = await mongoose.connect(process.env.MONGO_URI);
@@ -9,5 +8,4 @@ export const dbConnect = async () => {
         throw new Error(`Database connection failed: ${error.message}`);
         process.exit(1); // Exit process with failure, if needed
     }
-
 }

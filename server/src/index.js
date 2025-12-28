@@ -6,7 +6,7 @@ import morgan from "morgan";
 import { dbConnect } from "./config/dbConnect.js";
 import userRouter from "./routes/user.route.js";
 import productsRouter from "./routes/products.route.js";
-
+import cookieParser from "cookie-parser"
 
 const app = express();
 app.use(cors(
@@ -24,6 +24,8 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use(urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 // Connect Databse
 dbConnect()
@@ -47,7 +49,3 @@ process.on("unhandledRejection", (error) => {
     console.error("Unhandled Promise Rejection:", error.message);
     process.exit(1);
 })
-
-
-
-
