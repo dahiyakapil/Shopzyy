@@ -1,4 +1,5 @@
 import { generateJWTToken } from "../config/generateJwtToken.js";
+import { generateRefreshToken } from "../config/generateRefreshToken.js";
 import User from "../models/user.model.js";
 
 export const registerUser = async (req, res) => {
@@ -44,17 +45,38 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = await User.findOne({ email });
+        const findUser = await User.findOne({ email });
 
-        if (!user) {
-            return res.status(401).json({ message: "Invalid Credentials" });
+        if (findUser && (await findUser.comparePassword(password))) {
+            const refreshToken = await generateRefreshToken(findUser?.id);
+            const updateUser = await User.findByIdAndUpdate(
+                findUser._id,
+                {
+                    refreshToken: refreshToken
+                },
+                {
+                    new: true
+                }
+            );
+
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                maxAge: 72 * 60 * 60 * 1000,// 72 hours = 3 days
+            })
+
+            res.json({
+                message: "User logged in successfully",
+                _id: findUser?._id,
+                firstName: findUser?.firstName,
+                lastName: findUser?.lastName,
+                email: findUser?.email,
+                token: generateJWTToken(findUser._id),
+            })
+        } else {
+            return res.status(401).json({ message: "Invalid Credentials" })
         }
 
 
-        const isPasswordMatched = await user.comparePassword(password);
-        if (!isPasswordMatched) {
-            return res.status(401).json({ message: "Invalid Credentials", error: error.message })
-        }
 
         // User can login now
         return res.status(200).json({ message: "Login Successful", data: user, token: generateJWTToken(user._id) })

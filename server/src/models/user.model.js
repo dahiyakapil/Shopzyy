@@ -27,7 +27,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         minLength: 8,
-    }
+    },
+    isAdmin: ["user", "admin"]
 })
 
 UserSchema.pre("save", async function (next) {

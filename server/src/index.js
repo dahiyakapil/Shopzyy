@@ -5,6 +5,7 @@ import cors from "cors"
 import morgan from "morgan";
 import { dbConnect } from "./config/dbConnect.js";
 import userRouter from "./routes/user.route.js";
+import productsRouter from "./routes/products.route.js";
 
 
 const app = express();
@@ -39,7 +40,7 @@ dbConnect()
 
 // Import Routes
 app.use("/api/user", userRouter);
-
+app.use("/api/products", productsRouter)
 
 
 process.on("unhandledRejection", (error) => {
