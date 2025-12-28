@@ -75,11 +75,45 @@ export const login = async (req, res) => {
         } else {
             return res.status(401).json({ message: "Invalid Credentials" })
         }
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
 
+export const loginAdmin = async (req, res) => {
+    const { email, password } = req.body;
 
+    try {
+        const findAdmin = await User.findOne({ email });
 
-        // User can login now
-        return res.status(200).json({ message: "Login Successful", data: user, token: generateJWTToken(user._id) })
+        if (findAdmin && (await findAdmin.comparePassword(password))) {
+            // res.json(findUser);
+            const refreshToken = await generateRefreshToken(findAdmin?.id);
+            const updateuser = await User.findByIdAndUpdate(
+                findAdmin?._id,
+                { refreshToken: refreshToken },
+                {
+                    new: true,
+                }
+            );
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                maxAge: 72 * 60 * 60 * 1000,
+            });
+            res.json({
+                message: "Admin logged in successfully",
+                _id: findAdmin?._id,
+                firstName: findAdmin?.firstName,
+                lastName: findAdmin?.lastName,
+                email: findAdmin?.email,
+                token: generateJWTToken(findAdmin?._id),
+            });
+        } else {
+            throw new Error("Invalid Credential");
+        }
     } catch (error) {
         return res.status(500).json({
             message: "Server Error",
