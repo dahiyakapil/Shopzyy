@@ -7,6 +7,8 @@ import { dbConnect } from "./config/dbConnect.js";
 import userRouter from "./routes/user.route.js";
 import productsRouter from "./routes/products.route.js";
 import cookieParser from "cookie-parser"
+import brandRouter from "./routes/brand.route.js";
+import categoryRouter from "./routes/category.route.js";
 
 const app = express();
 app.use(cors(
@@ -43,6 +45,8 @@ dbConnect()
 // Import Routes
 app.use("/api/user", userRouter);
 app.use("/api/products", productsRouter)
+app.use("/api/brands", brandRouter)
+app.use("/api/category", categoryRouter)
 
 
 process.on("unhandledRejection", (error) => {
