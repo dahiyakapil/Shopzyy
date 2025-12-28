@@ -40,6 +40,33 @@ export const registerUser = async (req, res) => {
 }
 
 
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({ message: "Invalid Credentials" });
+        }
+
+
+        const isPasswordMatched = await user.comparePassword(password);
+        if (!isPasswordMatched) {
+            return res.status(401).json({ message: "Invalid Credentials", error: error.message })
+        }
+
+        // User can login now
+        return res.status(200).json({ message: "Login Successful", data: user, token: generateJWTToken(user._id) })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
+
 
 export const getAllUsers = async (req, res) => {
 
