@@ -32,13 +32,23 @@ const ProductSchema = new mongoose.Schema({
         required: true,
         default: 0,
     },
-    ratings: {
+    averageRating: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5,
+    },
+    ratingCount: {
         type: Number,
         default: 0,
     },
     images: {
         type: [String],
         required: true,
+    },
+    reviews: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
     },
     slug: {
         type: String,

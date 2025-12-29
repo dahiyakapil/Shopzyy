@@ -49,7 +49,10 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
     try {
-        const allProducts = await Product.find().populate("brand", "name").populate("category", "name");
+        const allProducts = await Product.find().populate("brand", "name").populate("category", "name").populate({
+        path: "reviews",
+        populate: { path: "user", select: "firstName lastName" },
+      });;
         res.status(200).json({
             message: "Products fetched successfully",
             data: allProducts

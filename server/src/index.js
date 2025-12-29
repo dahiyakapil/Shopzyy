@@ -9,6 +9,7 @@ import productsRouter from "./routes/products.route.js";
 import cookieParser from "cookie-parser"
 import brandRouter from "./routes/brand.route.js";
 import categoryRouter from "./routes/category.route.js";
+import reviewRouter from "./routes/review.route.js";
 
 const app = express();
 app.use(cors(
@@ -20,14 +21,17 @@ app.use(cors(
     },
 
 ));
-
-// For reading JSON Data
-app.use(express.json());
 app.use(morgan("dev"));
-
-app.use(urlencoded({ extended: true }));
-
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
+
+// Import Routes
+app.use("/api/user", userRouter);
+app.use("/api/products", productsRouter)
+app.use("/api/brands", brandRouter)
+app.use("/api/category", categoryRouter)
+app.use("/api/reviews", reviewRouter);
 
 // Connect Databse
 dbConnect()
@@ -42,14 +46,13 @@ dbConnect()
 
 
 
-// Import Routes
-app.use("/api/user", userRouter);
-app.use("/api/products", productsRouter)
-app.use("/api/brands", brandRouter)
-app.use("/api/category", categoryRouter)
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: "Something went wrong!" });
+});
 
-
+// Graceful shutdown
 process.on("unhandledRejection", (error) => {
-    console.error("Unhandled Promise Rejection:", error.message);
-    process.exit(1);
-})
+  console.error("Unhandled Rejection:", error?.message); 
+  process.exit(1);
+});
