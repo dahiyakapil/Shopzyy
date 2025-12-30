@@ -8,12 +8,16 @@ const Layout = () => {
 
     return (
         <>
-            <div>
-                <Navbar />
-            </div>
-            <div style={{ display: "flex" }}>
+            <div className="flex h-screen">
+
                 <Sidebar />
-                <Outlet />
+
+                <div className="flex-1 flex-col">
+                    <div className="h-10 bg-yellow-700">
+                        <Navbar />
+                    </div>
+                    <main className="p-6 m-6 bg-gray-200 "><Outlet /></main>
+                </div>
             </div>
         </>
     )

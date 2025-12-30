@@ -4,6 +4,7 @@ import Layout from "./layout/Layout";
 import AdminLogin from "./pages/admin/authAdmin/AdminLogin";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Dashboard from "./pages/admin/Dashboard/Dashboard";
+import { Products } from "./pages/Products";
 
 
 function App() {
@@ -12,23 +13,30 @@ function App() {
       <Routes>
         {/* Public routes */}
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
+          
+
+          {/* Protected admin routes (render inside Layout) */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/products" element={<Products />} />
+          </Route>
         </Route>
 
         {/* Admin login route (outside main layout) */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Protected admin dashboard (inside layout) */}
-        <Route element={<Layout />}>
+        {/* <Route element={<Layout />}>
           <Route
             path="/admin/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
+                <Products />
               </ProtectedRoute>
             }
           />
-        </Route>
+        </Route> */}
       </Routes>
     </Router>
   );
