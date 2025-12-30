@@ -10,7 +10,6 @@ const AdminLogin = () => {
         email: "",
         password: ""
     });
-    // Removed roleError and submitAttempted state
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -58,7 +57,6 @@ const AdminLogin = () => {
                     {loading ? "Logging in..." : "Login"}
                 </button>
                 {error && <p style={{ color: "red" }}>{error}</p>}
-                {/* roleError removed */}
             </form>
         </>
     );

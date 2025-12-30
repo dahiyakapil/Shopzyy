@@ -5,31 +5,33 @@ import AdminLogin from "./pages/admin/authAdmin/AdminLogin";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Dashboard from "./pages/admin/Dashboard/Dashboard";
 
+
 function App() {
-
-
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<AdminLogin />} />
-          <Route element={<Layout />}>
+    <Router>
+      <Routes>
+        {/* Public routes */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
 
-            <Route path="/" element={<Home />} />
+        {/* Admin login route (outside main layout) */}
+        <Route path="/admin/login" element={<AdminLogin />} />
 
-            <Route
-              path="/admin/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-        </Routes>
-      </Router>
-    </>
-  )
+        {/* Protected admin dashboard (inside layout) */}
+        <Route element={<Layout />}>
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

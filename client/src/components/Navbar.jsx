@@ -1,11 +1,11 @@
-export const Navabr = () => {
+export const Navbar = () => {
 
     
 
     return (
 
         <>
-            
+            <div>Navbar</div>
         </>
     )
 }

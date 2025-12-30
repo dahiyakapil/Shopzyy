@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
-import { Navabr } from "../components/Navbar"
-import { Footer } from "../components/Footer"
+import { Navbar } from "../components/Navbar"
+import { Sidebar } from "../components/Sidebar"
 
 const Layout = () => {
 
@@ -9,11 +9,11 @@ const Layout = () => {
     return (
         <>
             <div>
-                <Navabr />
+                <Navbar />
             </div>
-            <div>
+            <div style={{ display: "flex" }}>
+                <Sidebar />
                 <Outlet />
-                <Footer />
             </div>
         </>
     )
