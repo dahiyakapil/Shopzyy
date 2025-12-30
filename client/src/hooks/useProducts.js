@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProductsThunk } from "../store/slice/products.slice";
+import { getAllProductsThunk, setCurrentPage } from "../store/slice/products.slice";
 
 export const useProducts = () => {
 
     const dispatch = useDispatch();
 
 
-    const { products, loading, error } = useSelector((state) => {
+    const { products, loading, error, currentPage, pageSize } = useSelector((state) => {
         return state.products
     });
 
@@ -14,7 +14,11 @@ export const useProducts = () => {
         dispatch(getAllProductsThunk());
     }
 
-    
+    const changePage = (pageNumber) => {    
+        dispatch(setCurrentPage(pageNumber));
+    }
 
-    return { products, loading, error, loadProdcuts }
+
+
+    return { products, loading, error, loadProdcuts, changePage, currentPage, pageSize };
 }

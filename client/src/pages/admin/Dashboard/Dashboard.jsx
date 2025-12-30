@@ -1,10 +1,22 @@
+
 import { useEffect } from "react";
 import { useProducts } from "../../../hooks/useProducts";
+import Pagination from "../../../components/Pagination";
 
 const Dashboard = () => {
 
 
-    const { products, loading, error, loadProdcuts } = useProducts();
+    const { products, loading, error, loadProdcuts, changePage, currentPage, pageSize } = useProducts();
+
+
+    // Pagination Logic
+
+    const filteredProducts = Array.isArray(products) ? products : [];
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(filteredProducts.length / pageSize);
+
 
     useEffect(() => {
         loadProdcuts();
@@ -19,10 +31,14 @@ const Dashboard = () => {
     }
 
     return (
+
         <>
+
+
+
             <h3>Admin Dashboard</h3>
-            {(Array.isArray(products) && products.length > 0) ? (
-                products.map((p) => {
+            {(Array.isArray(paginatedProducts) && paginatedProducts.length > 0) ? (
+                paginatedProducts.map((p) => {
                     // If API returns product directly, not wrapped in 'data'
                     const product = p.data ? p.data : p;
                     return (
@@ -36,6 +52,14 @@ const Dashboard = () => {
             ) : (
                 <p>No products found.</p>
             )}
+
+
+            {/* Pagination Controls */}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={changePage}
+            />
         </>
     )
 }

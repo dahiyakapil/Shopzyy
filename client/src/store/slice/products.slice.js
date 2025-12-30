@@ -19,8 +19,15 @@ export const productSlice = createSlice({
         products: [],
         loading: false,
         error: null,
+
+        currentPage: 1, 
+        pageSize: 5,
     },
-    reducers: {},
+    reducers: {
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload;
+        }
+    },
 
 
     extraReducers: (builder) => {
@@ -41,4 +48,5 @@ export const productSlice = createSlice({
     }
 })
 
+export const { setCurrentPage } = productSlice.actions;
 export default productSlice.reducer;
