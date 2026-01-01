@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProductsThunk, setCurrentPage } from "../store/slice/products.slice";
+import { createProductThunk, getAllProductsThunk, setCurrentPage } from "../store/slice/products.slice";
 
 export const useProducts = () => {
 
@@ -18,7 +18,11 @@ export const useProducts = () => {
         dispatch(setCurrentPage(pageNumber));
     }
 
+    const createProduct = (payloadProuct) => {
+        return dispatch(createProductThunk(payloadProuct));
+    }
 
 
-    return { products, loading, error, loadProdcuts, changePage, currentPage, pageSize };
+
+    return { products, loading, error, loadProdcuts, changePage, createProduct, currentPage, pageSize };
 }

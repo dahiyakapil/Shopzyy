@@ -1,0 +1,9 @@
+
+
+In Creating product 
+
+- Add validation schema
+- Persist the state on creating the product, brands and category are rendering after reloading
+- Add Image, Stock logic
+- Add useMemo and useCallback for performance optimization
+- Add search feature at the server side using limit 

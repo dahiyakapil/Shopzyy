@@ -5,7 +5,7 @@ export const Sidebar = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col w-64 h-screen bg-slate-900 text-slate-200 shadow-xl">
+        <div className="flex flex-col w-64 min-h-screen bg-slate-900 text-slate-200 shadow-xl">
 
             {/* Header */}
             <div className="flex items-center justify-center h-16 border-b border-slate-700">
@@ -33,9 +33,22 @@ export const Sidebar = () => {
                 </button>
 
                 {/* Brands */}
-                <button className="w-full text-left px-4 py-3 rounded-lg text-slate-300 font-medium
+                <button
+                onClick={() => {
+                    return navigate("/admin/brands")
+                }}
+                 className="w-full text-left px-4 py-3 rounded-lg text-slate-300 font-medium
           hover:bg-slate-800 hover:text-white transition">
                     Brands
+                </button>
+                {/* Category */}
+                <button
+                onClick={() => {
+                    return navigate("/admin/category")
+                }}
+                 className="w-full text-left px-4 py-3 rounded-lg text-slate-300 font-medium
+          hover:bg-slate-800 hover:text-white transition">
+                    Category
                 </button>
 
                 {/* Orders */}

@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "user",
     },
-})
+}, { timestamps: true})
 
 UserSchema.pre("save", async function (next) {
     // If our password is not modified than don't update it and simple go next()

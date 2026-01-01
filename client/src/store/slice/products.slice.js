@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllProrducts } from "../../services/products.service"
+import { getAllProrducts, createProduct } from "../../services/products.service"
 
 export const getAllProductsThunk = createAsyncThunk(
     "products/getAllProducts",
@@ -13,6 +13,23 @@ export const getAllProductsThunk = createAsyncThunk(
 
     });
 
+export const createProductThunk = createAsyncThunk(
+    "products/createProduct",
+    async (productPayload, thunkAPI) => {
+        try {
+            const response = await createProduct(productPayload)
+            return response
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+)
+
+
+
+
+
+
 export const productSlice = createSlice({
     name: "products",
     initialState: {
@@ -20,7 +37,7 @@ export const productSlice = createSlice({
         loading: false,
         error: null,
 
-        currentPage: 1, 
+        currentPage: 1,
         pageSize: 5,
     },
     reducers: {
@@ -45,6 +62,19 @@ export const productSlice = createSlice({
             state.loading = false;
             state.error = action.payload || "Something went wrong";
         })
+            .addCase(createProductThunk.pending, (state) => {
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(createProductThunk.fulfilled, (state, payload) => {
+                state.loading = false;
+                state.products.push(payload.payload.data);
+                state.error = null;
+            })
+            .addCase(createProductThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Something went wrong";
+            })
     }
 })
 

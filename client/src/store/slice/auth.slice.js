@@ -28,6 +28,10 @@ const authSlice = createSlice({
             state.admin = null;
             state.isAuthenticated = false;
             localStorage.removeItem("token");
+            // remove any client-side refresh token copy if present
+            try { localStorage.removeItem("refreshToken"); } catch (e) {
+                console.error("Error removing refresh token from localStorage", e);
+             }
         }
     },
 

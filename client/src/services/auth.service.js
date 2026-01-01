@@ -7,3 +7,9 @@ export const loginAdmin = async (credentials) => {
     }, { withCredentials: true });
     return response.data;
 };
+
+export const logoutAdmin = async () => {
+    // Best-effort server logout: backend may clear httpOnly refresh cookie
+    const response = await axiosInstance.post("user/logout", {}, { withCredentials: true });
+    return response.data;
+}

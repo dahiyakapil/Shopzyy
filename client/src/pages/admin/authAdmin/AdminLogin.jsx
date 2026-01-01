@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { useAdminAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { LoginButton } from "../../../components/buttons/LoginButton";
 
+import { useAdminAuth } from "../../../hooks/useAuth";
+import { FormInput } from "../../../components/input/FormInput";
 
 const AdminLogin = () => {
     const { loading, error, isAuthenticated, adminLogin } = useAdminAuth();
@@ -32,32 +34,39 @@ const AdminLogin = () => {
 
     return (
         <>
+
+        <div className="flex flex-col justify-center items-center p-2 m-2 w-full h-screen ">
+
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email:</label>
-                    <input
+
+
+                <div className="flex flex-col justify-center items-center p-2 m-2 border border-b-amber-500 w-90 gap-4">
+
+                    <div>
+                        <FormInput
+                        label="Email" 
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
+                        placeholder="Enter your email"
+                        />  
+                    </div>
+                    <div>
+                        <FormInput
+                        label="Password" 
                         type="password"
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        required
-                    />
+                        placeholder="Enter your password"
+                        />
+                    </div>
+                    <LoginButton onClick={handleSubmit} loading={loading} />   
+                    {error && <p style={{ color: "red" }}>{error}</p>}
                 </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-                {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
+        </div>
         </>
     );
 };
